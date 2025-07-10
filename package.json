@@ -1,6 +1,9 @@
 {
-  "name": "com.verdantray.AddressableGroupAssignTool",
+  "name": "com.verdantray.addressablesentrytool",
   "version": "1.0.0",
-  "displayName": "AddressableGroupAssignTool",
-  "description": "Unity 에디터에서 Addressables Assets을 경로 기반으로 관리하기 위한 도구 입니다."
+  "displayName": "Addressables Entry Tool",
+  "description": "An automation tool for managing Addressable Asset entries in the Unity Editor",
+  "dependencies": {
+    "com.unity.addressables": "2.4.6"
+  }
 }
