@@ -1,0 +1,6 @@
+{
+  "name": "com.verdantray.AddressableGroupAssignTool",
+  "version": "1.0.0",
+  "displayName": "AddressableGroupAssignTool",
+  "description": "Unity 에디터에서 Addressables Assets을 경로 기반으로 관리하기 위한 도구 입니다."
+}
