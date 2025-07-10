@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace AddressableGroupAssignTool.Editor
+namespace AddressablesEntryTool.Editor
 {
     public class AssignLogBuilder
     {

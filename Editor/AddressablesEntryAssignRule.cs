@@ -2,9 +2,9 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
-namespace AddressableGroupAssignTool.Editor
+namespace AddressablesEntryTool.Editor
 {
-    public class AddressableGroupAssignRule : ScriptableObject
+    public sealed class AddressablesEntryAssignRule : ScriptableObject
     {
         [SerializeField] private AssignRuleData[] assignGroupRules;
 
@@ -21,21 +21,21 @@ namespace AddressableGroupAssignTool.Editor
         }
     }
 
-    public class GroupAssignRuleDeleteProcessor : AssetModificationProcessor
+    public sealed class AddressablesEntryAssignRuleDeleteProcessor : AssetModificationProcessor
     {
         public static AssetDeleteResult OnWillDeleteAsset(string assetPath, RemoveAssetOptions options)
         {
-            if (assetPath == AddressableGroupAssignor.Instance.RuleAssetPath)
+            if (assetPath == AddressablesEntryAssigner.Instance.RuleAssetPath)
             {
-                AddressableGroupAssignor.Instance.DeleteSetting();
+                AddressablesEntryAssigner.Instance.DeleteSetting();
             }
 
             return AssetDeleteResult.DidNotDelete;
         }
     }
 
-    [CustomEditor(typeof(AddressableGroupAssignRule))]
-    public class AddressableGroupAssignRuleEditor : UnityEditor.Editor
+    [CustomEditor(typeof(AddressablesEntryAssignRule))]
+    public sealed class AddressablesEntryAssignRuleEditor : UnityEditor.Editor
     {
         private readonly string _assetNameRuleMessage = "Available Tags for AssetNameRule : \n\n" +
                                                         $"{PathTags.FULL_PATH} : full path of addressable, include asset's name and extension.\n" +

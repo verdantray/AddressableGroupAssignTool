@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEditor.AddressableAssets.Settings;
 
-namespace AddressableGroupAssignTool.Editor
+namespace AddressablesEntryTool.Editor
 {
     public delegate void EntryAddedDelegate(AddressableAssetSettings settings, List<AddressableAssetEntry> addedEntries);
 

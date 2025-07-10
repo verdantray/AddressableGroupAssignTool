@@ -7,11 +7,11 @@ using UnityEditor.AddressableAssets.Settings;
 using UnityEditorInternal;
 using UnityEngine;
 
-namespace AddressableGroupAssignTool.Editor
+namespace AddressablesEntryTool.Editor
 {
-    public class AddressableGroupAssignorWindow : EditorWindow
+    public class AddressablesEntryAssignerWindow : EditorWindow
     {
-        private AddressableGroupAssignor Assignor => AddressableGroupAssignor.Instance;
+        private AddressablesEntryAssigner Assignor => AddressablesEntryAssigner.Instance;
         
         private readonly string[] _ruleAssetFilters = { "Asset File", "asset" };
 
@@ -19,14 +19,19 @@ namespace AddressableGroupAssignTool.Editor
         private Vector2 _entireScrollPos = Vector2.zero;
         private Vector2 _listScrollPos = Vector2.zero;
         
-        [MenuItem("Window/Asset Management/Addressables/Group Assignor Tool")]
+        [MenuItem("Window/Asset Management/Addressables/Addressables Entry Tool")]
         private static void OpenWindow()
         {
-            GetWindow<AddressableGroupAssignorWindow>(nameof(AddressableGroupAssignor));
+            GetWindow<AddressablesEntryAssignerWindow>(nameof(AddressablesEntryAssigner));
         }
 
         private void OnFocus()
         {
+            if (!Assignor.IsRuleAssetImported)
+            {
+                return;
+            }
+            
             _assetEntriesBreakingRule = GetAssetEntriesBreakingRules();
         }
 
@@ -74,7 +79,7 @@ namespace AddressableGroupAssignTool.Editor
             if (GUILayout.Button("Import RuleAsset"))
             {
                 string assetPath = EditorUtility.OpenFilePanelWithFilters(
-                    title: $"Please select {nameof(AddressableGroupAssignRule)} asset",
+                    title: $"Please select {nameof(AddressablesEntryAssignRule)} asset",
                     directory: initialDirectory,
                     filters: _ruleAssetFilters
                 );
@@ -85,14 +90,14 @@ namespace AddressableGroupAssignTool.Editor
             if (GUILayout.Button("Create new RuleAsset"))
             {
                 string createPath = EditorUtility.SaveFilePanelInProject(
-                    title : $"Please select path to create {nameof(AddressableGroupAssignRule)} asset",
-                    defaultName: nameof(AddressableGroupAssignRule),
+                    title : $"Please select path to create {nameof(AddressablesEntryAssignRule)} asset",
+                    defaultName: nameof(AddressablesEntryAssignRule),
                     extension: "asset",
                     message: "What",
                     path: initialDirectory
                 );
 
-                AddressableGroupAssignRule toCreate = CreateInstance<AddressableGroupAssignRule>();
+                AddressablesEntryAssignRule toCreate = CreateInstance<AddressablesEntryAssignRule>();
                 
                 AssetDatabase.CreateAsset(toCreate, createPath);
                 AssetDatabase.SaveAssets();
@@ -249,7 +254,7 @@ namespace AddressableGroupAssignTool.Editor
             }
             
             Assignor.RuleAssetPath = relativePath;
-            Debug.Log($"{nameof(AddressableGroupAssignor)} try import rule asset : {Assignor.IsRuleAssetImported}\n from '{relativePath}'");
+            Debug.Log($"{nameof(AddressablesEntryAssigner)} try import rule asset : {Assignor.IsRuleAssetImported}\n from '{relativePath}'");
         }
 
         private void ApplySaveGroupChangesImmediatelyToggleOption(bool toggle)

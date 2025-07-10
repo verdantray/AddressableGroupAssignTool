@@ -6,13 +6,13 @@ using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Settings;
 using UnityEngine;
 
-namespace AddressableGroupAssignTool.Editor
+namespace AddressablesEntryTool.Editor
 {
     [InitializeOnLoad]
-    public class AddressableGroupAssignor
+    public class AddressablesEntryAssigner
     {
-        public static AddressableGroupAssignor Instance { get; private set; } = null;
-        public AddressableGroupAssignRule RuleAsset => _ruleAsset;
+        public static AddressablesEntryAssigner Instance { get; private set; } = null;
+        public AddressablesEntryAssignRule RuleAsset => _ruleAsset;
 
         public bool IsRuleAssetImported => (bool)RuleAsset;
 
@@ -58,9 +58,9 @@ namespace AddressableGroupAssignTool.Editor
         private readonly AssignLogBuilder _logBuilder;
         private readonly Settings _settings;
         
-        private AddressableGroupAssignRule _ruleAsset;
+        private AddressablesEntryAssignRule _ruleAsset;
 
-        private AddressableGroupAssignor()
+        private AddressablesEntryAssigner()
         {
             _modificationEventHandler = new AddressableSettingModificationEventHandler();
             _modificationEventHandler.OnEntryModified += AlertSameAddressAlreadyExists;
@@ -70,9 +70,9 @@ namespace AddressableGroupAssignTool.Editor
         }
         
         [ExecuteAlways]
-        static AddressableGroupAssignor()
+        static AddressablesEntryAssigner()
         {
-            Instance = new AddressableGroupAssignor();
+            Instance = new AddressablesEntryAssigner();
 
             if (string.IsNullOrEmpty(Instance.RuleAssetPath))
             {
@@ -91,7 +91,7 @@ namespace AddressableGroupAssignTool.Editor
 
         public void ImportRuleAsset(string assetPath)
         {
-            _ruleAsset = AssetDatabase.LoadAssetAtPath<AddressableGroupAssignRule>(assetPath);
+            _ruleAsset = AssetDatabase.LoadAssetAtPath<AddressablesEntryAssignRule>(assetPath);
             // Debug.Log($"{nameof(AddressableGroupAssignor)} try import rule asset : {IsRuleAssetImported}\n from '{assetPath}'");
         }
 
@@ -100,13 +100,13 @@ namespace AddressableGroupAssignTool.Editor
             if (!AddressableAssetSettingsDefaultObject.SettingsExists)
             {
                 AddressableAssetSettingsDefaultObject.GetSettings(true);
-                Debug.Log($"{nameof(AddressableGroupAssignor)} : Can't find Addressables Settings asset. create new one.");
+                Debug.Log($"{nameof(AddressablesEntryAssigner)} : Can't find Addressables Settings asset. create new one.");
             }
             
             AddressableAssetSettingsDefaultObject.Settings.OnModification += _modificationEventHandler.HandleModification;
             _modificationEventHandler.OnEntryAdded += AssignAssetGroupWithPathAndSaveChanges;
             
-            Debug.Log($"{nameof(AddressableGroupAssignor)} : Subscribe modification event");
+            Debug.Log($"{nameof(AddressablesEntryAssigner)} : Subscribe modification event");
         }
 
         public void DescribeAssetModificationEvent()
@@ -119,7 +119,7 @@ namespace AddressableGroupAssignTool.Editor
             AddressableAssetSettingsDefaultObject.Settings.OnModification -= _modificationEventHandler.HandleModification;
             _modificationEventHandler.OnEntryAdded -= AssignAssetGroupWithPathAndSaveChanges;
             
-            Debug.Log($"{nameof(AddressableGroupAssignor)} : Describe modification event");
+            Debug.Log($"{nameof(AddressablesEntryAssigner)} : Describe modification event");
         }
 
         public void AssignAssetGroupWithPath(AddressableAssetSettings settings, List<AddressableAssetEntry> entries)
