@@ -5,5 +5,9 @@
   "description": "An automation tool for managing Addressable Asset entries in the Unity Editor",
   "dependencies": {
     "com.unity.addressables": "2.4.6"
+  },
+  "author": {
+    "name": "Verdantray",
+    "email": "verdantray@outlook.kr"
   }
 }
