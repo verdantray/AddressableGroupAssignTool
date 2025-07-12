@@ -97,6 +97,12 @@ namespace AddressablesEntryTool.Editor
                     path: initialDirectory
                 );
 
+                if (string.IsNullOrEmpty(createPath))
+                {
+                    // Can't create asset because of path is empty when canceled SaveFilePanel
+                    return;
+                }
+
                 AddressablesEntryAssignRule toCreate = CreateInstance<AddressablesEntryAssignRule>();
                 
                 AssetDatabase.CreateAsset(toCreate, createPath);
@@ -178,7 +184,7 @@ namespace AddressablesEntryTool.Editor
             breakingRuleList.DoLayoutList();
             EditorGUILayout.EndScrollView();
 
-            if (_assetEntriesBreakingRule.Count <= 0)
+            if (_assetEntriesBreakingRule == null || _assetEntriesBreakingRule.Count == 0)
             {
                 return;
             }
@@ -254,7 +260,7 @@ namespace AddressablesEntryTool.Editor
             }
             
             Assignor.RuleAssetPath = relativePath;
-            Debug.Log($"{nameof(AddressablesEntryAssigner)} try import rule asset : {Assignor.IsRuleAssetImported}\n from '{relativePath}'");
+            Debug.Log($"{nameof(AddressablesEntryAssigner)} imported rule asset from '{relativePath}'");
         }
 
         private void ApplySaveGroupChangesImmediatelyToggleOption(bool toggle)
@@ -276,8 +282,12 @@ namespace AddressablesEntryTool.Editor
         private List<AssetEntryGroupPair> GetAssetEntriesBreakingRules()
         {
             List<AddressableAssetEntry> allAssets = new List<AddressableAssetEntry>();
-            AddressableAssetSettingsDefaultObject.Settings.GetAllAssets(allAssets, false);
 
+            if (AddressableAssetSettingsDefaultObject.SettingsExists)
+            {
+                AddressableAssetSettingsDefaultObject.Settings.GetAllAssets(allAssets, false);
+            }
+            
             List<AssetEntryGroupPair> assetListBreakingRules = new List<AssetEntryGroupPair>();
             
             foreach (var assetEntry in allAssets)

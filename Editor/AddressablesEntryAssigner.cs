@@ -74,19 +74,17 @@ namespace AddressablesEntryTool.Editor
         {
             Instance = new AddressablesEntryAssigner();
 
-            if (string.IsNullOrEmpty(Instance.RuleAssetPath))
+            if (Instance.AssignGroupAutomatically)
             {
-                return;
+                Instance.SubscribeAssetModificationEvent();
             }
             
-            Instance.ImportRuleAsset(Instance.RuleAssetPath);
-
-            if (!Instance.AssignGroupAutomatically)
+            if (!string.IsNullOrEmpty(Instance.RuleAssetPath))
             {
-                return;
+                Instance.ImportRuleAsset(Instance.RuleAssetPath);
             }
             
-            Instance.SubscribeAssetModificationEvent();
+            Debug.Log($"{nameof(AddressablesEntryTool)} service started.");
         }
 
         public void ImportRuleAsset(string assetPath)
@@ -99,8 +97,16 @@ namespace AddressablesEntryTool.Editor
         {
             if (!AddressableAssetSettingsDefaultObject.SettingsExists)
             {
-                AddressableAssetSettingsDefaultObject.GetSettings(true);
                 Debug.Log($"{nameof(AddressablesEntryAssigner)} : Can't find Addressables Settings asset. create new one.");
+                
+                AddressableAssetSettingsDefaultObject.Settings = AddressableAssetSettings.Create(
+                    AddressableAssetSettingsDefaultObject.kDefaultConfigFolder,
+                    AddressableAssetSettingsDefaultObject.kDefaultConfigAssetName,
+                    true,
+                    true
+                );
+                
+                AssetDatabase.Refresh();
             }
             
             AddressableAssetSettingsDefaultObject.Settings.OnModification += _modificationEventHandler.HandleModification;
