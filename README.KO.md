@@ -46,7 +46,7 @@ Window → Asset Management → Addressables → Addressables Entry Tool
 [extension] : 에셋의 확장자를 반환합니다.
 [lower] : Address 문자열 전체를 소문자로 바꾸어 반환합니다.
 [nospace] : Address 문자열에 존재하는 공백문자를 모두 제거합니다.
->``` 
+``` 
 
 ## 📦 설치 방법
 
