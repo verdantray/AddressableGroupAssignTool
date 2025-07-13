@@ -1,6 +1,6 @@
 {
   "name": "com.verdantray.addressablesentrytool",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "displayName": "Addressables Entry Tool",
   "description": "An automation tool for managing Addressable Asset entries in the Unity Editor.\nUse 'Window -> Asset Management -> Addressables -> Addressables Entry Tool' to begin.",
   "dependencies": {

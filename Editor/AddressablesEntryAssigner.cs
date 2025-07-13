@@ -139,12 +139,34 @@ namespace AddressablesEntryTool.Editor
                     _logBuilder.AppendFailedResult(entry.MainAsset.name, entry.parentGroup.Name);
                     continue;
                 }
+
+                string addressToChange = rule.GetAddressableName(entry);
+                bool needToChangeAddress = !string.IsNullOrEmpty(addressToChange)
+                                           && entry.AssetPath != rule.GetAddressableName(entry);
                 
-                entry.SetAddress(rule.GetAddressableName(entry));
-                settings.MoveEntry(entry, rule.targetGroup);
-                
-                _logBuilder.AppendSuccessResult(entry.MainAsset.name, entry.parentGroup.Name, rule.targetGroup.Name);
-                successCount++;
+                if (needToChangeAddress)
+                {
+                    entry.SetAddress(rule.GetAddressableName(entry));
+                }
+
+                var groupToChange = rule.targetGroup;
+                bool needToChangeGroup = (bool)groupToChange && entry.parentGroup != groupToChange;
+
+                if (needToChangeGroup)
+                {
+                    settings.MoveEntry(entry, rule.targetGroup);
+                }
+
+                if (needToChangeAddress || needToChangeGroup)
+                {
+                    _logBuilder.AppendSuccessResult(entry.MainAsset.name, entry.parentGroup.Name,
+                        rule.targetGroup.Name);
+                    successCount++;
+                }
+                else
+                {
+                    _logBuilder.AppendFailedResult(entry.MainAsset.name, entry.parentGroup.Name);
+                }
             }
             
             Debug.Log($"AddressableGroupAssignor has assigned {successCount} of {entries.Count} assets.\n\n{_logBuilder}");

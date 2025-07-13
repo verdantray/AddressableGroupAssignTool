@@ -332,8 +332,11 @@ namespace AddressablesEntryTool.Editor
             private readonly AddressableAssetGroup _groupToAssign;
             private readonly string _addressToChange;
 
-            public bool IsBreakingAddressRule => AssetEntry.address != _addressToChange;
-            public bool IsBreakingGroupRule => AssetEntry.parentGroup != _groupToAssign;
+            public bool IsBreakingAddressRule => !string.IsNullOrEmpty(_addressToChange)
+                                                 && AssetEntry.address != _addressToChange;
+            
+            public bool IsBreakingGroupRule => (bool)_groupToAssign
+                                               && AssetEntry.parentGroup != _groupToAssign;
 
             public string AssetName => Path.GetFileName(AssetEntry.AssetPath);
             public string CurrentAddress => AssetEntry?.address ?? string.Empty;
